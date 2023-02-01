@@ -9,7 +9,10 @@ const usersController = {
     },
 
     getAllUsers : async (req, res) => {
-        return await res.status(200).json(usersDB)
+
+        if (usersDB.length === 0)
+            return await res.status(200).send({message: "There are not users"})
+        else return await res.status(200).json(usersDB)
     },
 
     getUserById : async (req, res) => {
@@ -17,7 +20,9 @@ const usersController = {
         
         const user = await usersDB.find(user => user.id == id)
 
-        return res.status(200).json(user)
+        if (user)
+            return res.status(200).json(user)
+        else return res.status(404).send({message: "User not found"})
     },
 
     createUser : (req, res) => {
